@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import '../css/app.css';
+import AssignTeacher from './Components/Admin/AssignTeacher';
+import ManageUsers from './Components/Admin/ManageUsers';
 
 // Import dashboard components
 import AdminDashboard from './Components/Admin/Dashboard';

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        return response()->json([
-            'message' => 'Welcome to the Admin Dashboard',
+        return Inertia::render('Admin/Dashboard', [
+            // You can pass any additional data needed by your component here
+            'auth' => [
+                'user' => auth()->user()
+            ],
+            // Add other props if needed
         ]);
     }
 }

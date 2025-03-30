@@ -32,11 +32,21 @@ Route::middleware('guest')->group(function () {
     })->name('welcome');
 });
 
-
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     // Logout
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    // Dashboard fallback route
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        return match ($user->role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'teacher' => redirect()->route('teacher.dashboard'),
+            'student' => redirect()->route('student.dashboard'),
+            default => redirect('/'),
+        };
+    })->name('dashboard');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -91,4 +101,3 @@ Route::middleware('auth')->group(function () {
         return redirect()->route("{$user->role}.dashboard");
     })->name('home');
 });
-
