@@ -1,25 +1,26 @@
-import '../css/app.css';
-import './bootstrap';
-
+// resources/js/app.jsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot } from 'react-dom/client';
+import '../css/app.css';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+// Import dashboard components
+import AdminDashboard from './Components/Admin/Dashboard';
+import TeacherDashboard from './Components/Teacher/Dashboard';
+import StudentDashboard from './Components/Student/Dashboard';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) =>
-        resolvePageComponent(
-            `./Pages/${name}.jsx`,
-            import.meta.glob('./Pages/**/*.jsx'),
-        ),
-    setup({ el, App, props }) {
-        const root = createRoot(el);
-
-        root.render(<App {...props} />);
+    resolve: name => {
+        // Custom resolution for dashboard components
+        if (name === 'Admin/Dashboard') return AdminDashboard;
+        if (name === 'Teacher/Dashboard') return TeacherDashboard;
+        if (name === 'Student/Dashboard') return StudentDashboard;
+        
+        // Default resolution for other pages
+        return resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx'));
     },
-    progress: {
-        color: '#4B5563',
+    setup({ el, App, props }) {
+        createRoot(el).render(<App {...props} />);
     },
 });
